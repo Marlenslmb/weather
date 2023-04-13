@@ -3,5 +3,5 @@
 </template>
 
 <script lang="ts" setup>
-import MainPage from "@/modules/MainPage.vue";
+import MainPage from "@/modules/weather/components/MainPage.vue";
 </script>

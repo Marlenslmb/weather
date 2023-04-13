@@ -1,12 +1,13 @@
 // Styles
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
-// import "@/styles/_variables.scss";
+// import "@/styles/main.scss";
 
 // Vuetify
 import { createVuetify } from "vuetify";
 
 export default createVuetify({
+  ssr: true,
   theme: {
     defaultTheme: "light",
   },
