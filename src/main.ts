@@ -11,6 +11,6 @@ import "./assets/main.css";
 
 const app = createApp(App);
 
-app.use(createPinia()).use(router).use(vuetify).use(Quasar, quasarUserOptions);
+app.use(createPinia()).use(router).use(vuetify);
 
 app.mount("#app");
