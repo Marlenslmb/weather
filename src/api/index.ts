@@ -1,5 +1,9 @@
 import axios from "axios";
-import type { ICitiesPayloadData, IWeatherData, IWeatherListItem } from "./types/index.types";
+import type {
+  ICitiesPayloadData,
+  IWeatherData,
+  IWeatherListItem,
+} from "./types/index.types";
 
 export const getWeather = (payload: IWeatherData) => {
   return new Promise<IWeatherListItem[]>((resolve, reject) => {
@@ -22,17 +26,6 @@ export const getWeatherForecast = (term: any) => {
   });
 };
 
-// export const getKyrgyzstanCities = (apiKey: string) => {
-//   return new Promise<any>((resolve, reject) => {
-//     axios
-//       .get(
-//         `https://api.weatherapi.com/v1/search.json?key=${apiKey}&q=Kyrghyzstan
-//         `
-//       )
-//       .then((res) => resolve(res.data))
-//       .catch((err) => reject(err));
-//   });
-// };
 export const getKyrgyzstanCities = (apiKey: string) => {
   return new Promise<any>((resolve, reject) => {
     axios
@@ -41,9 +34,9 @@ export const getKyrgyzstanCities = (apiKey: string) => {
         `,
         {
           headers: {
-            'x-rapidapi-key': apiKey,
-            'x-rapidapi-host': 'wft-geo-db.p.rapidapi.com'
-          }
+            "x-rapidapi-key": apiKey,
+            "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
+          },
         }
       )
       .then((res) => resolve(res.data))
