@@ -2,10 +2,10 @@
   <header>
     <div class="wrapper">
       <IndexPage></IndexPage>
-      <nav>
+      <!-- <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
-      </nav>
+      </nav> -->
     </div>
   </header>
 
