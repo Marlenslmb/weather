@@ -1,102 +1,150 @@
 <template>
-  <v-card class="mx-auto" max-width="368">
-    <v-card-item title="Florida">
+  <v-card class="mx-auto" width="350">
+    <div class="location-box">
+      <div class="location">
+        {{ weatherForm.name }}, {{ weatherForm.sys.country }}
+      </div>
+      <div class="date">{{ dateBuilder() }}</div>
+    </div>
+    <v-card-item title="">
       <template v-slot:subtitle>
         <v-icon
-          icon="mdi-alert"
+          :icon="weatherIcon"
           size="18"
           color="error"
           class="me-1 pb-1"
         ></v-icon>
-
-        Extreme Weather Alert
+        {{ weatherForm.weather[0]?.main }}
       </template>
     </v-card-item>
 
     <v-card-text class="py-0">
       <v-row align="center" no-gutters>
-        <v-col class="text-h2" cols="6"> 64&deg;F </v-col>
+        <v-col class="text-h2" cols="8">
+          <!-- TODO поставить условия для фаренгейта и цельсии -->
+          {{ Math.round(weatherForm.main.temp) }}
+          <v-icon v-if="unitState === UnitsEnum.Metric"
+            >mdi-temperature-celsius</v-icon
+          >
+          <v-icon v-if="unitState === UnitsEnum.Imperial"
+            >mdi-temperature-fahrenheit</v-icon
+          >
+        </v-col>
 
-        <v-col cols="6" class="text-right">
+        <v-col cols="4" class="text-right">
           <v-icon color="error" icon="mdi-weather-hurricane" size="88"></v-icon>
         </v-col>
       </v-row>
     </v-card-text>
 
-    <div class="d-flex py-3 justify-space-between">
+    <div class="d-flex py-3 justify-space-between flex-wrap">
       <v-list-item density="compact" prepend-icon="mdi-weather-windy">
-        <v-list-item-subtitle>123 km/h</v-list-item-subtitle>
+        <v-list-item-subtitle
+          >{{ weatherForm.wind.speed }} м/с</v-list-item-subtitle
+        >
       </v-list-item>
-
-      <v-list-item density="compact" prepend-icon="mdi-weather-pouring">
-        <v-list-item-subtitle>48%</v-list-item-subtitle>
+      <v-list-item density="compact" prepend-icon="mdi-water-percent">
+        <v-list-item-subtitle
+          >{{ weatherForm.main.humidity }} %</v-list-item-subtitle
+        >
       </v-list-item>
     </div>
-
-    <v-expand-transition>
-      <div v-if="expand">
-        <div class="py-2">
-          <v-slider
-            v-model="time"
-            :max="6"
-            :step="1"
-            :ticks="labels"
-            class="mx-4"
-            color="primary"
-            density="compact"
-            hide-details
-            show-ticks="always"
-            thumb-size="10"
-          ></v-slider>
-        </div>
-
-        <v-list class="bg-transparent">
-          <v-list-item
-            v-for="item in forecast"
-            :key="item.day"
-            :title="item.day"
-            :append-icon="item.icon"
-            :subtitle="item.temp"
+    <div class="d-flex py-3 justify-space-between flex-wrap">
+      <v-list-item :title="$t('Ощущается как')">
+        <v-list-item-subtitle
+          >{{ weatherForm.main.feels_like }}
+          <v-icon v-if="unitState === UnitsEnum.Metric"
+            >mdi-temperature-celsius</v-icon
           >
-          </v-list-item>
-        </v-list>
-      </div>
-    </v-expand-transition>
-
-    <v-divider></v-divider>
-
-    <v-card-actions>
-      <v-btn @click="expand = !expand">
-        {{ !expand ? "Full Report" : "Hide Report" }}
-      </v-btn>
-    </v-card-actions>
+          <v-icon v-if="unitState === UnitsEnum.Imperial"
+            >mdi-temperature-fahrenheit</v-icon
+          >
+        </v-list-item-subtitle>
+      </v-list-item>
+      <v-list-item :title="$t('Давление')">
+        <v-list-item-subtitle
+          >{{ weatherForm.main.pressure }} мм рт. ст.
+        </v-list-item-subtitle>
+      </v-list-item>
+    </div>
+    <div class="d-flex py-3 justify-space-between flex-wrap">
+      <v-list-item :title="$t('Мин. темп.')">
+        <v-list-item-subtitle
+          >{{ weatherForm.main.temp_min }}
+        </v-list-item-subtitle>
+      </v-list-item>
+      <v-list-item :title="$t('Макс. темп.')">
+        <v-list-item-subtitle
+          >{{ weatherForm.main.temp_max }}
+        </v-list-item-subtitle>
+      </v-list-item>
+    </div>
   </v-card>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useWeatherForecastStore } from "../store";
+import { UnitsEnum } from "@/api/types/index.types";
 
-const labels = {
-  0: "SU",
-  1: "MO",
-  2: "TU",
-  3: "WED",
-  4: "TH",
-  5: "FR",
-  6: "SA",
-};
-const expand = ref(false);
-const time = ref(0);
-const forecast = computed(() => {
-  return [
-    { day: "Tuesday", icon: "mdi-white-balance-sunny", temp: "24\xB0/12\xB0" },
-    {
-      day: "Wednesday",
-      icon: "mdi-white-balance-sunny",
-      temp: "22\xB0/14\xB0",
-    },
-    { day: "Thursday", icon: "mdi-cloud", temp: "25\xB0/15\xB0" },
-  ];
+defineProps({
+  unitState: String,
 });
+const weatherStore = useWeatherForecastStore();
+
+const weatherForm = computed(() => weatherStore.getWeatherForecasts);
+
+const weatherIcon = computed((): string => {
+  return weatherForm.value.weather[0]?.main === "Clear"
+    ? "mdi-weather-cloudy"
+    : "";
+});
+
+function dateBuilder() {
+  let d = new Date(),
+    months = [
+      "Январь",
+      "Февраль",
+      "Март",
+      "Апрель",
+      "Май",
+      "Июнь",
+      "Июль",
+      "Август",
+      "Сентябрь",
+      "Октябрь",
+      "Ноябрь",
+      "Декабрь",
+    ],
+    days = [
+      "Понедельник",
+      "Вторник",
+      "Среда",
+      "Четверг",
+      "Пятница",
+      "Суббота",
+      "Воскресенье",
+    ],
+    day = days[d.getDay()],
+    date = d.getDate(),
+    month = months[d.getMonth()],
+    year = d.getFullYear();
+
+  return `${day} ${date} ${month} ${year}`;
+}
 </script>
+
+<style>
+.location-box .location {
+  font-size: 32px;
+  font-weight: 500;
+  text-align: center;
+  text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
+}
+.location-box .date {
+  font-size: 20px;
+  font-weight: 300;
+  font-style: italic;
+  text-align: center;
+}
+</style>

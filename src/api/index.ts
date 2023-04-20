@@ -1,15 +1,16 @@
 import axios from "axios";
 import type {
-  ICitiesPayloadData,
-  IWeatherData,
+  IWeatherSearchParams,
   IWeatherListItem,
 } from "./types/index.types";
 
-export const getWeather = (payload: IWeatherData) => {
-  return new Promise<IWeatherListItem[]>((resolve, reject) => {
+export const getWeather = (payload: IWeatherSearchParams) => {
+  return new Promise<IWeatherListItem>((resolve, reject) => {
     axios
       .get(
-        `https://demo.openweathermap.org/energy/1.0/solar/data?lat=${payload.lat}&lon=${payload.lon}&date=${payload.date}&tz=+03:00&appid=${payload.apiKey}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${
+          payload.city ? payload.city : "Bishkek"
+        }&units=${payload.units}&appid=${payload.apiKey}`
       )
       .then((res) => resolve(res.data))
       .catch((err) => reject(err));
@@ -19,7 +20,7 @@ export const getWeatherForecast = (term: any) => {
   return new Promise<IWeatherListItem[]>((resolve, reject) => {
     axios
       .get(
-        `https://api.openweathermap.org/data/2.5/find?q=${term}&type=like&appid=${process.env.API_KEY}`
+        `http://dataservice.accuweather.com/forecasts/v1/daily/1day/{locationKey}`
       )
       .then((res) => resolve(res.data))
       .catch((err) => reject(err));

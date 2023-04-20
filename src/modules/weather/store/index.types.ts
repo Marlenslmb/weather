@@ -1,11 +1,16 @@
-import type {  IWeatherData, IWeatherListItem } from "@/api/types/index.types";
+import type {
+  IWeatherSearchParams,
+  IWeatherListItem,
+  IWeatherCitiesListItem,
+  IIndexable,
+} from "@/api/types/index.types";
 
 export interface IWeatherForecasteState {
-  form: IWeatherData
-  weatherForecasts: IWeatherListItem[];
-  cities: any[]
+  form: IWeatherForm;
+  weatherForecasts: IWeatherListItem;
+  cities: IWeatherCitiesListItem[];
+
+  temperature: string;
 }
 
-export interface IWeatherForm extends Omit<IWeatherData, "date">{
-  date: Date;
-}
+export type IWeatherForm = IIndexable & IWeatherSearchParams;
