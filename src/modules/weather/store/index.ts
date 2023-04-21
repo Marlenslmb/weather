@@ -73,7 +73,7 @@ export const useWeatherForecastStore = defineStore("weather-forecast.index", {
     getCities(): IWeatherCitiesListItem[] {
       return this.cities;
     },
-    getUnitState(): any {
+    getUnitState(): string {
       return this.form.units;
     },
   },
@@ -110,7 +110,7 @@ export const useWeatherForecastStore = defineStore("weather-forecast.index", {
       });
     },
 
-    setFormValue(key: string, value: any) {
+    setFormValue(key: string, value: string | number) {
       if (key && value) {
         const data = this.cities.find((e) => e.id === value);
         if (data) {

@@ -9,7 +9,7 @@ export const getWeather = (payload: IWeatherSearchParams) => {
     axios
       .get(
         `https://api.openweathermap.org/data/2.5/weather?q=${
-          payload.city ? payload.city : "Bishkek"
+          payload.city ? payload.city : "Aixovall"
         }&units=${payload.units}&appid=${payload.apiKey}`
       )
       .then((res) => resolve(res.data))

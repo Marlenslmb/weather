@@ -6,6 +6,8 @@ export default {
       /* Notify defaults */
     },
   },
+  directives: {},
+  components: {},
   plugins: {
     Notify,
   },

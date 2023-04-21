@@ -12,13 +12,15 @@
     >
     </v-autocomplete>
 
+    <q-btn color="white" text-color="black" label="Standard" />
+
     <CardBlock :unitState="unitState"></CardBlock>
 
-    <v-btn @click="translateValues">{{
+    <q-btn @click="translateValues">{{
       unitState === UnitsEnum.Metric
         ? $t("cc289191-f8fd-4ed2-916d-bbb2776eadd3")
         : $t("e04dd66c-c5b1-405f-a4f6-ea16a48f995b")
-    }}</v-btn>
+    }}</q-btn>
   </div>
 </template>
 
@@ -51,12 +53,13 @@ function filterCities(key: string, value: string) {
 
 function fetchCities() {
   weatherStore.fetchCities();
+  // weatherStore.fetchWeather();
 }
 function translateValues() {
   weatherStore.fetchWeather();
 }
 
-fetchCities();
+// fetchCities();
 
 // TODO пока что просто поставил :)
 onUnmounted(() => weatherStore.$reset());
