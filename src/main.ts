@@ -14,8 +14,7 @@ import "quasar/src/css/index.sass";
 import App from "./App.vue";
 import router from "./router";
 import vuetify from "./plugins/vuetify";
-import quasarUserOptions from "./plugins/quasar";
-import i18n from "@/plugins/i18n";
+import { i18n } from "@/plugins/i18n";
 
 import "./assets/main.css";
 

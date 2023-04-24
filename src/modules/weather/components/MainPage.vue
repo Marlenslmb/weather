@@ -1,37 +1,63 @@
 <template>
-  <div>
-    <!-- <div class="text-uppercase font-weight-bold page-title">
-      {{ $t("7711e96b-8137-44b6-983c-efce018ef08d") }}
-    </div> -->
+  <div class="page-container">
+    <div class="header">
+      <div class="text-uppercase font-weight-bold page-title align-self-center">
+        {{ $t("7711e96b-8137-44b6-983c-efce018ef08d") }}
+      </div>
+      <div>
+        <q-btn-dropdown
+          class="dropdown"
+          :label="$t('5f302356-02b6-41ed-ba69-bb249fc55a5e')"
+        >
+          <q-list>
+            <q-item clickable v-close-popup @click="onItemClick">
+              <q-item-section>
+                <q-item-label>
+                  {{ $t("264e95b2-1475-49d6-800a-0695ee187331") }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup @click="onItemClick">
+              <q-item-section>
+                <q-item-label>
+                  {{ $t("6a3b2e0e-0d50-4896-af3c-6e5ebc070657") }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
+      </div>
+    </div>
 
     <v-autocomplete
-      :modelValue="selectedCity"
+      v-model="selectedCity.value"
       :items="cities"
       :label="$t('607c80cc-743e-4ae6-8f53-9a85fa5b031a')"
       @update:modelValue="filterCities('selectedCity', $event)"
     >
     </v-autocomplete>
 
-    <q-btn color="white" text-color="black" label="Standard" />
-
     <CardBlock :unitState="unitState"></CardBlock>
-
-    <q-btn @click="translateValues">{{
-      unitState === UnitsEnum.Metric
-        ? $t("cc289191-f8fd-4ed2-916d-bbb2776eadd3")
-        : $t("e04dd66c-c5b1-405f-a4f6-ea16a48f995b")
-    }}</q-btn>
+    <div class="btn-div">
+      <q-btn class="btn" @click="translateValues">{{
+        unitState == UnitsEnum.Metric
+          ? $t("cc289191-f8fd-4ed2-916d-bbb2776eadd3")
+          : $t("e04dd66c-c5b1-405f-a4f6-ea16a48f995b")
+      }}</q-btn>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onUnmounted } from "vue";
+import { computed, reactive } from "vue";
 import { useWeatherForecastStore } from "../store";
 import CardBlock from "./CardBlock.vue";
 import { UnitsEnum } from "@/api/types/index.types";
+import { i18n } from "../../../plugins/i18n";
 
 const weatherStore = useWeatherForecastStore();
-const selectedCity = ref(null);
+const localize = i18n;
+const selectedCity = reactive({ value: null });
 
 const unitState = computed(() => {
   return weatherStore.getUnitState;
@@ -47,26 +73,62 @@ const cities = computed(() => {
 });
 
 function filterCities(key: string, value: string) {
-  console.log(key, value);
   weatherStore.setFormValue(key, value);
 }
 
 function fetchCities() {
   weatherStore.fetchCities();
-  // weatherStore.fetchWeather();
 }
 function translateValues() {
-  weatherStore.fetchWeather();
+  if (unitState.value === UnitsEnum.Metric) {
+    weatherStore.setUntis(UnitsEnum.Imperial);
+    // weatherStore.fetchWeather();
+  } else {
+    weatherStore.setUntis(UnitsEnum.Metric);
+    // weatherStore.fetchWeather();
+  }
 }
 
-// fetchCities();
+function onItemClick(item: any) {
+  console.log(localize);
+  if (
+    item.target.outerText === "Английский язык" ||
+    item.target.outerText === "English"
+  ) {
+    localize.global.locale.value = "en";
+  } else {
+    localize.global.locale.value = "ru";
+  }
+}
 
-// TODO пока что просто поставил :)
-onUnmounted(() => weatherStore.$reset());
+fetchCities();
+// weatherStore.setUntis(UnitsEnum.Metric);
 </script>
 
 <style>
 .page-title {
-  color: rgb(67, 160, 71);
+  color: #09f;
+}
+.page-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.btn {
+  width: 250px;
+  background-color: #09f;
+}
+.dropdown {
+  width: 180px;
+}
+.btn-div {
+  display: flex;
+  justify-content: center;
+  margin: 5px;
 }
 </style>

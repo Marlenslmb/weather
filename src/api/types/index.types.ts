@@ -94,3 +94,8 @@ export enum UnitsEnum {
   Metric = "metric",
   Imperial = "imperial",
 }
+
+export enum ITheme {
+  light = "light",
+  dark = "dark",
+}

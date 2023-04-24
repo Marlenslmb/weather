@@ -3,6 +3,7 @@ import type {
   IWeatherListItem,
   IWeatherCitiesListItem,
   IIndexable,
+  ITheme,
 } from "@/api/types/index.types";
 
 export interface IWeatherForecasteState {
@@ -11,6 +12,8 @@ export interface IWeatherForecasteState {
   cities: IWeatherCitiesListItem[];
 
   temperature: string;
+
+  theme: ITheme;
 }
 
 export type IWeatherForm = IIndexable & IWeatherSearchParams;

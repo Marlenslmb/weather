@@ -1,19 +1,20 @@
 import { defineStore } from "pinia";
 import type { IWeatherForecasteState } from "./index.types";
 import {
-  type ICitiesPayloadData,
   type IWeatherSearchParams,
   type IWeatherListItem,
-  UnitsEnum,
+  type UnitsEnum,
   type IWeatherCitiesListItem,
+  ITheme,
 } from "@/api/types/index.types";
-import { getKyrgyzstanCities, getWeather, getWeatherForecast } from "@/api";
+import { getKyrgyzstanCities, getWeather } from "@/api";
 import { isWeatherListGuard } from "@/api/types/index.guards";
 
 export const useWeatherForecastStore = defineStore("weather-forecast.index", {
   state: (): IWeatherForecasteState => {
     return {
       form: {
+        selectedCity: null,
         apiKey: null,
         city: null,
         lat: null,
@@ -61,6 +62,8 @@ export const useWeatherForecastStore = defineStore("weather-forecast.index", {
       cities: [],
 
       temperature: "",
+
+      theme: ITheme.light,
     };
   },
   getters: {
@@ -76,21 +79,22 @@ export const useWeatherForecastStore = defineStore("weather-forecast.index", {
     getUnitState(): string {
       return this.form.units;
     },
+    getTheme(): string {
+      return this.theme;
+    },
   },
   actions: {
-    fetchWeather(units: UnitsEnum = UnitsEnum.Metric) {
+    fetchWeather() {
       return new Promise<IWeatherListItem>((resolve, reject) => {
         const payload = {
           ...this.form,
           apiKey: "e22480dc6d550a7618459593bdbe5594",
-          units,
         };
         getWeather(payload)
           .then((data) => {
             console.log(data);
             if (isWeatherListGuard(data)) {
               this.weatherForecasts = data;
-              console.log(data, "in GUARD");
             }
             resolve(data);
           })
@@ -119,15 +123,20 @@ export const useWeatherForecastStore = defineStore("weather-forecast.index", {
             city: data.city,
             lat: data.latitude,
             lon: data.longitude,
+            units: this.form.units,
           };
           this.fetchWeather();
         }
-        console.log(data);
       }
     },
 
     setUntis(value: UnitsEnum) {
       this.form.units = value;
+      this.fetchWeather();
+    },
+
+    setTheme(value: ITheme) {
+      this.theme = value;
     },
   },
 });
