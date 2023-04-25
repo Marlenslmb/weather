@@ -1,13 +1,12 @@
 import { defineStore } from "pinia";
 import type { IWeatherForecasteState } from "./index.types";
-import {
-  type IWeatherSearchParams,
-  type IWeatherListItem,
-  type UnitsEnum,
-  type IWeatherCitiesListItem,
-  ITheme,
+import type {
+  IWeatherSearchParams,
+  IWeatherListItem,
+  UnitsEnum,
+  IWeatherCitiesListItem,
 } from "@/api/types/index.types";
-import { getKyrgyzstanCities, getWeather } from "@/api";
+import { getWorldCities, getWeather } from "@/api";
 import { isWeatherListGuard } from "@/api/types/index.guards";
 
 export const useWeatherForecastStore = defineStore("weather-forecast.index", {
@@ -61,9 +60,9 @@ export const useWeatherForecastStore = defineStore("weather-forecast.index", {
 
       cities: [],
 
-      temperature: "",
+      temperature: null,
 
-      theme: ITheme.light,
+      theme: "light",
     };
   },
   getters: {
@@ -92,7 +91,6 @@ export const useWeatherForecastStore = defineStore("weather-forecast.index", {
         };
         getWeather(payload)
           .then((data) => {
-            console.log(data);
             if (isWeatherListGuard(data)) {
               this.weatherForecasts = data;
             }
@@ -104,10 +102,9 @@ export const useWeatherForecastStore = defineStore("weather-forecast.index", {
     fetchCities() {
       const apiKey = "bedba5e7e2mshe6465495dddfc09p1ba66ajsn6fe9ee2e6289";
       return new Promise<IWeatherCitiesListItem[]>((resolve, reject) => {
-        getKyrgyzstanCities(apiKey)
+        getWorldCities(apiKey)
           .then((data) => {
             this.cities = data.data;
-            console.log(this.cities);
             resolve(data);
           })
           .catch((err) => reject(err));
@@ -135,8 +132,8 @@ export const useWeatherForecastStore = defineStore("weather-forecast.index", {
       this.fetchWeather();
     },
 
-    setTheme(value: ITheme) {
-      this.theme = value;
+    setTheme(theme: string) {
+      this.theme = theme;
     },
   },
 });

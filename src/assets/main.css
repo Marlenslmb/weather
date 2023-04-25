@@ -1,35 +1,101 @@
 @import "./base.css";
 
+:root {
+  --background-color-light: white;
+  --background-color-dark: #121212;
+}
+
 #app {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
 
   font-weight: normal;
+  display: flex;
+  justify-content: center;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+body {
+  background-color: var(--background-color);
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+.page-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.btn-div {
+  display: flex;
+  justify-content: center;
+  margin: 5px;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+/*  LIGHT THEME */
+.theme-light {
+  background-color: white;
+  color: #121212;
+}
+.theme-light .v-card {
+  -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+.theme-light .location-box .location {
+  font-size: 32px;
+  font-weight: 500;
+  text-align: center;
+  text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
+}
+.theme-light .location-box .date {
+  font-size: 20px;
+  font-weight: 300;
+  font-style: italic;
+  text-align: center;
+}
+.theme-light .page-title {
+  color: #09f;
+}
+.theme-light .btn {
+  width: 250px;
+  color: #09f;
+}
+
+/* DARK THEME */
+.theme-dark {
+  background-color: #121212;
+  color: white;
+}
+.theme-dark .location-box .location {
+  font-size: 32px;
+  font-weight: 500;
+  text-align: center;
+  text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
+}
+.theme-dark .location-box .date {
+  font-size: 20px;
+  font-weight: 300;
+  font-style: italic;
+  text-align: center;
+}
+.theme-dark .page-title {
+  color: #ffffffde;
+}
+.theme-dark .dropdown {
+  background-color: #212121;
+}
+.theme-dark .theme-btn {
+  background-color: #212121;
+}
+
+.theme-block {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

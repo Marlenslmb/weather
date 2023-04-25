@@ -8,7 +8,6 @@ import "@quasar/extras/material-icons-sharp/material-icons-sharp.css";
 import "@quasar/extras/material-symbols-outlined/material-symbols-outlined.css";
 import "@quasar/extras/material-symbols-rounded/material-symbols-rounded.css";
 import "@quasar/extras/material-symbols-sharp/material-symbols-sharp.css";
-// TODO исправить ошибку с importom
 import "quasar/src/css/index.sass";
 
 import App from "./App.vue";

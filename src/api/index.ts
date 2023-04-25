@@ -16,18 +16,8 @@ export const getWeather = (payload: IWeatherSearchParams) => {
       .catch((err) => reject(err));
   });
 };
-export const getWeatherForecast = (term: any) => {
-  return new Promise<IWeatherListItem[]>((resolve, reject) => {
-    axios
-      .get(
-        `http://dataservice.accuweather.com/forecasts/v1/daily/1day/{locationKey}`
-      )
-      .then((res) => resolve(res.data))
-      .catch((err) => reject(err));
-  });
-};
 
-export const getKyrgyzstanCities = (apiKey: string) => {
+export const getWorldCities = (apiKey: string) => {
   return new Promise<any>((resolve, reject) => {
     axios
       .get(

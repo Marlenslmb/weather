@@ -1,5 +1,6 @@
 <template>
   <div class="page-container">
+    <ThemeSwitcher></ThemeSwitcher>
     <div class="header">
       <div class="text-uppercase font-weight-bold page-title align-self-center">
         {{ $t("7711e96b-8137-44b6-983c-efce018ef08d") }}
@@ -38,8 +39,9 @@
     </v-autocomplete>
 
     <CardBlock :unitState="unitState"></CardBlock>
+
     <div class="btn-div">
-      <q-btn class="btn" @click="translateValues">{{
+      <q-btn outline class="btn" @click="translateValues">{{
         unitState == UnitsEnum.Metric
           ? $t("cc289191-f8fd-4ed2-916d-bbb2776eadd3")
           : $t("e04dd66c-c5b1-405f-a4f6-ea16a48f995b")
@@ -54,6 +56,7 @@ import { useWeatherForecastStore } from "../store";
 import CardBlock from "./CardBlock.vue";
 import { UnitsEnum } from "@/api/types/index.types";
 import { i18n } from "../../../plugins/i18n";
+import ThemeSwitcher from "./ThemeSwitcher.vue";
 
 const weatherStore = useWeatherForecastStore();
 const localize = i18n;
@@ -82,15 +85,12 @@ function fetchCities() {
 function translateValues() {
   if (unitState.value === UnitsEnum.Metric) {
     weatherStore.setUntis(UnitsEnum.Imperial);
-    // weatherStore.fetchWeather();
   } else {
     weatherStore.setUntis(UnitsEnum.Metric);
-    // weatherStore.fetchWeather();
   }
 }
 
 function onItemClick(item: any) {
-  console.log(localize);
   if (
     item.target.outerText === "Английский язык" ||
     item.target.outerText === "English"
@@ -101,34 +101,8 @@ function onItemClick(item: any) {
   }
 }
 
-fetchCities();
-// weatherStore.setUntis(UnitsEnum.Metric);
-</script>
+weatherStore.setTheme("light");
 
-<style>
-.page-title {
-  color: #09f;
-}
-.page-container {
-  display: flex;
-  flex-direction: column;
-  max-width: 400px;
-}
-.header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-.btn {
-  width: 250px;
-  background-color: #09f;
-}
-.dropdown {
-  width: 180px;
-}
-.btn-div {
-  display: flex;
-  justify-content: center;
-  margin: 5px;
-}
-</style>
+fetchCities();
+weatherStore.setUntis(UnitsEnum.Metric);
+</script>

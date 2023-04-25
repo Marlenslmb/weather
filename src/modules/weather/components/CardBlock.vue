@@ -21,7 +21,6 @@
     <v-card-text class="py-0">
       <v-row align="center" no-gutters>
         <v-col class="text-h2" cols="8">
-          <!-- TODO поставить условия для фаренгейта и цельсии -->
           {{ Math.round(weatherForm.main.temp) }}
           <v-icon v-if="unitState == UnitsEnum.Metric"
             >mdi-temperature-celsius</v-icon
@@ -88,8 +87,8 @@ defineProps({
 });
 const weatherStore = useWeatherForecastStore();
 const { t } = useI18n();
-const weatherForm = computed(() => weatherStore.getWeatherForecasts);
 
+const weatherForm = computed(() => weatherStore.getWeatherForecasts);
 const weatherIcon = computed((): string => {
   return weatherForm.value.weather[0]?.main === "Clear"
     ? "mdi-weather-cloudy"
@@ -129,18 +128,3 @@ function dateBuilder() {
   return `${day} ${date} ${month} ${year}`;
 }
 </script>
-
-<style>
-.location-box .location {
-  font-size: 32px;
-  font-weight: 500;
-  text-align: center;
-  text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
-}
-.location-box .date {
-  font-size: 20px;
-  font-weight: 300;
-  font-style: italic;
-  text-align: center;
-}
-</style>
